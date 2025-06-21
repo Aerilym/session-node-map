@@ -1,25 +1,60 @@
 {
-  "name": "globe",
+  "name": "session-node-map",
+  "description": "A 3D globe visualization of the Session Node Network",
   "version": "0.1.0",
-  "private": true,
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aerilym/session-node-map.git"
+  },
+  "author": {
+    "email": "aerilym@pm.me",
+    "name": "Aerilym",
+    "url": "https://github.com/aerilym"
+  },
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "check-types": "tsc --noEmit",
+    "check-telemetry": "next telemetry",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --write",
+    "format": "biome format --write",
+    "check": "biome check",
+    "check:fix": "biome check --write"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-switch": "^1.2.5",
+    "@tanstack/react-query": "^5.80.10",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "geolite2-redist": "^3.1.1",
+    "keyv": "^5.3.4",
+    "lucide-react": "^0.518.0",
+    "maxmind": "^4.3.27",
+    "next": "15.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.4"
+    "react-globe.gl": "^2.33.2",
+    "solar-calculator": "^0.3.0",
+    "tailwind-merge": "^3.3.1",
+    "three": "^0.177.0",
+    "usepref": "^1.0.1",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@biomejs/biome": "2.0.0",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "@types/three": "^0.177.0",
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.4",
+    "typescript": "^5"
   },
   "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
 }
