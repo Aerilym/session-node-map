@@ -31,8 +31,12 @@ export async function getNodesUnsafe() {
     public_ip: string;
     active: boolean;
     last_uptime_proof: number;
+    exit_type: null;
   }>;
-  const nodes = rawNodes.filter(({ last_uptime_proof }) => last_uptime_proof >= oldestUptime);
+  const nodes = rawNodes.filter(
+    ({ active, last_uptime_proof, exit_type }) =>
+      active && exit_type === null && last_uptime_proof >= oldestUptime,
+  );
   const results: SingleGeoResult[] = nodes.map(({ public_ip }) => lookupIp(public_ip));
 
   const formattedResults = new Map<string, FormattedResult>();
