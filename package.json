@@ -35,7 +35,7 @@
     "keyv": "^5.3.4",
     "lucide-react": "^0.518.0",
     "maxmind": "^4.3.27",
-    "next": "15.3.6",
+    "next": "15.3.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-globe.gl": "^2.33.2",
