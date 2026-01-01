@@ -3,7 +3,10 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { usePref } from 'usepref';
 import { Switch } from '@/components/ui/switch';
+import { DialogTrigger, Dialog, DialogContent, DialogTitle } from './ui/dialog';
 import { PREFERENCE } from '@/providers/preferences-provider';
+import { Button } from './ui/button';
+import { SettingsIcon } from 'lucide-react';
 
 type ControlItem = {
   label: string;
@@ -61,19 +64,18 @@ function ControlSwitchItem({ item }: { item: ControlItem }) {
 
 export function Controls() {
   return (
-    <div className="w-96 flex flex-col gap-3 bg-sidebar border border-sidebar-border rounded-2xl p-4">
-      {controls.map((item) => (
-        <ControlSwitchItem key={item.key} item={item} />
-      ))}
-      <Link
-        href="https://github.com/aerilym/session-node-map"
-        prefetch={false}
-        referrerPolicy="no-referrer"
-        target="_blank"
-        className="text-blue-500 underline"
-      >
-        Source (GitHub)
-      </Link>
-    </div>
+    <Dialog>
+      <DialogTrigger asChild className="flex flex-row fixed top-2 end-2">
+        <Button size="icon" variant="ghost" className="rounded-full">
+          <SettingsIcon className="h-8 w-8" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Settings </DialogTitle>
+        {controls.map((item) => (
+          <ControlSwitchItem key={item.key} item={item} />
+        ))}
+      </DialogContent>
+    </Dialog>
   );
 }

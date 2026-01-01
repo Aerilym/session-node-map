@@ -4,6 +4,7 @@ import './globals.css';
 import type { ReactNode } from 'react';
 import { PrefProvider } from '@/providers/preferences-provider';
 import QueryProvider from '@/providers/query-provider';
+import { InfoDialog } from '@/components/InfoDialog';
 
 const robotoFlex = Roboto_Flex({
   variable: '--font-roboto-flex',
@@ -24,7 +25,10 @@ export default function RootLayout({
     <PrefProvider>
       <QueryProvider>
         <html lang="en">
-          <body className={`${robotoFlex.variable} antialiased`}>{children}</body>
+          <body className={`${robotoFlex.variable} antialiased`}>
+            {children}
+            <InfoDialog />
+          </body>
         </html>
       </QueryProvider>
     </PrefProvider>

@@ -42,7 +42,6 @@ export default function GlobeClient() {
   const [hoverText, setHoverText] = useState<string>('');
   const [dt, setDt] = useState(Date.now());
   const [globeMaterial, setGlobeMaterial] = useState<ShaderMaterial>();
-  const [showSettings, setShowSettings] = useState(false);
 
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: 0,
@@ -197,29 +196,17 @@ export default function GlobeClient() {
         width={dimensions.width}
         height={dimensions.height}
       />
-      <div className="fixed top-2 start-2 text-sm flex flex-col gap-2">
-        <div className="flex flex-row">
-          {loadingText ? (
-            <div className="bg-sidebar border-sidebar-border rounded-2xl px-3 py-2 w-max">
-              {loadingText}
-            </div>
-          ) : null}
-          <Button
-            size="icon"
-            variant="ghost"
-            className="rounded-full"
-            onClick={() => setShowSettings((prev) => !prev)}
-          >
-            <SettingsIcon className="h-8 w-8" />
-          </Button>
+      {loadingText ? (
+        <div className="fixed top-2 start-1/2 bg-sidebar border-sidebar-border rounded-2xl px-3 py-2 w-max -translate-x-1/2">
+          {loadingText}
         </div>
-        {showSettings ? <Controls /> : null}
-        {hoverText ? (
-          <div className="bg-sidebar border-sidebar-border rounded-2xl px-3 py-2 w-max">
-            {hoverText}
-          </div>
-        ) : null}
-      </div>
+      ) : null}
+      <Controls />
+      {hoverText ? (
+        <div className="bg-sidebar border-sidebar-border rounded-2xl px-3 py-2 w-max fixed bottom-4 start-1/2 -translate-x-1/2">
+          {hoverText}
+        </div>
+      ) : null}
     </div>
   );
 }

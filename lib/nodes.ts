@@ -1,5 +1,6 @@
 import { initLookup, lookupIp, type SingleGeoResult } from '@/lib/geolocate';
 import { safeTry } from '@/lib/try';
+import { parseStakeState, STAKE_STATE } from './stake';
 
 export type FormattedResult = Omit<SingleGeoResult, 'ip' | 'error'> & {
   n: number;
@@ -24,19 +25,16 @@ export async function getNodesUnsafe() {
 
   const network = data.network;
 
-  // any node with an uptime in the past 48 hours is online
-  const oldestUptime = network.block_timestamp - 48 * 60 * 60;
-
   const rawNodes = data.nodes as Array<{
     public_ip: string;
     active: boolean;
     last_uptime_proof: number;
     exit_type: null;
   }>;
-  const nodes = rawNodes.filter(
-    ({ active, last_uptime_proof, exit_type }) =>
-      active && exit_type === null && last_uptime_proof >= oldestUptime,
-  );
+  const nodes = rawNodes.filter((stake) => {
+    const state = parseStakeState(stake, network.current_height);
+    return state === STAKE_STATE.RUNNING || state === STAKE_STATE.DECOMMISSIONED;
+  });
   const results: SingleGeoResult[] = nodes.map(({ public_ip }) => lookupIp(public_ip));
 
   const formattedResults = new Map<string, FormattedResult>();
