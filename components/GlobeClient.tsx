@@ -1,6 +1,6 @@
 'use client';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { SettingsIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -9,10 +9,10 @@ import type { GlobeMethods, GlobeProps } from 'react-globe.gl';
 import * as solar from 'solar-calculator';
 import type { ShaderMaterial } from 'three';
 import { usePref } from 'usepref';
-import { getNodesAction } from '@/app/actions';
 import { Controls } from '@/components/Controls';
 import { Button } from '@/components/ui/button';
 import { QUERY_KEY } from '@/lib/constants';
+import type { FormattedResult } from '@/lib/nodes';
 import { getGlobeDayNightShader } from '@/lib/shaders';
 import { PREFERENCE } from '@/providers/preferences-provider';
 
@@ -28,6 +28,14 @@ interface Point {
   country: string | null;
   n: number;
   altitude: number;
+}
+
+async function fetchNodes(): Promise<FormattedResult[]> {
+  const res = await fetch('/nodes.json', { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch nodes (status ${res.status})`);
+  }
+  return res.json();
 }
 
 type Dimensions = {
@@ -54,9 +62,9 @@ export default function GlobeClient() {
   const disableRealTime = !!getItem<boolean>(PREFERENCE.DISABLE_REAL_TIME);
   const hideMilkyWay = !!getItem<boolean>(PREFERENCE.HIDE_MILKY_WAY);
 
-  const { data, error, isPending, isError } = useSuspenseQuery({
+  const { data, error, isPending, isError } = useQuery({
     queryKey: [QUERY_KEY.NODE_LIST],
-    queryFn: getNodesAction,
+    queryFn: fetchNodes,
     refetchInterval: disableLiveData ? false : 600_000,
   });
 
@@ -78,12 +86,10 @@ export default function GlobeClient() {
   }, []);
 
   const points = useMemo(() => {
-    const [err, nodes] = data;
-
-    if (err) {
-      setLoadingText(`Failed to fetch nodes ${err.message}`);
+    if (!data) {
       return;
     }
+    const nodes = data;
 
     if (!Array.isArray(nodes) || nodes.length === 0) {
       setLoadingText('No Session Nodes found.');

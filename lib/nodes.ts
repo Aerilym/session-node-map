@@ -1,5 +1,4 @@
 import { initLookup, lookupIp, type SingleGeoResult } from '@/lib/geolocate';
-import { safeTry } from '@/lib/try';
 import { parseStakeState, STAKE_STATE } from './stake';
 
 export type FormattedResult = Omit<SingleGeoResult, 'ip' | 'error'> & {
@@ -9,7 +8,7 @@ export type FormattedResult = Omit<SingleGeoResult, 'ip' | 'error'> & {
 
 const makeGroupId = (res: SingleGeoResult) => `${res.city}${res.country}`;
 
-export async function getNodesUnsafe() {
+export async function getNodes() {
   await initLookup(); // ensure DB is loaded
   const externalRes = await fetch('https://stake.getsession.org/api/ssb/nodes');
   if (!externalRes.ok) {
@@ -85,7 +84,4 @@ export async function getNodesUnsafe() {
   }
 
   return [...formattedResults.values()];
-}
-export async function getNodes() {
-  return safeTry(getNodesUnsafe());
 }

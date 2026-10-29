@@ -25,7 +25,7 @@ export default function RootLayout({
     <PrefProvider>
       <QueryProvider>
         <html lang="en">
-          <body className={`${robotoFlex.variable} antialiased`}>
+          <body className={`${robotoFlex.variable} antialiased overflow-hidden`}>
             {children}
             <InfoDialog />
           </body>

@@ -7,14 +7,19 @@ This is hosted at https://nodemap.aerilym.com/
 
 ## Data
 
-All external data fetching and processing happens on the server, clients will only need to communicate with the host
-server.
+The site is a static export. `scripts/generate-nodes.ts` fetches the node list from the
+[Session Staking Portal API](https://stake.getsession.org), resolves each node's location and writes the per-city counts to
+`nodes.json`; clients only ever load that file from the host and re-fetch it every 10 minutes. Node IPs never reach the
+client.
 
-The map sources its node data from the [Session Staking Portal API](https://stake.getsession.org) which updates its data
-every 2-minutes, in line with when a new block is produced.
+`pnpm build` writes `public/nodes.json` before building. To keep a deployed site current, re-run the script against the
+served copy, for example from cron every 10 minutes:
 
-Geolocation data is sourced from [MaxMind GeoLite2](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data) and is
-resolved on the server for each request of the node list.
+```sh
+pnpm generate-nodes out/nodes.json
+```
+
+Geolocation data is sourced from [MaxMind GeoLite2](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data).
 
 ## Attributions
 
