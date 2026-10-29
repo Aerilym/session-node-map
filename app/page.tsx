@@ -1,5 +1,5 @@
-import GlobeSSR from '@/components/GlobeSSR';
+import GlobeClient from '@/components/GlobeClient';
 
 export default function Page() {
-  return <GlobeSSR />;
+  return <GlobeClient />;
 }

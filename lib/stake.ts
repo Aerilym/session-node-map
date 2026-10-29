@@ -145,7 +145,9 @@ const STATE_EVENTS = new Set([
 ]);
 
 export function parseStakeEventState(stake: Stake) {
-  const stateEvents = stake.events.filter((event) => STATE_EVENTS.has(event.name));
+  const stateEvents = stake.events.filter((event: { name: ARBITRUM_EVENT }) =>
+    STATE_EVENTS.has(event.name),
+  );
   const latestEvent = stateEvents[0];
   if (!latestEvent) return STAKE_EVENT_STATE.UNKNOWN;
 
